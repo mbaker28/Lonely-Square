@@ -4,20 +4,22 @@ using System.Collections;
 public class Player : MonoBehaviour {
 
     public float speed = 0f;
+    public Vector2 jumpHeight;
     public float rotationSpeed = 0f;
 
     private float movex = 0f;
     private float movey = 0f;
 
-    private bool isGrounded = false;
+    public bool isGrounded = false;
+    public Transform groundCheck;
+    float groundRadius = 0.2f;
+    public LayerMask whatIsGround;
 
     private Rigidbody2D rigi;
 
-    private void Awake()
+    void Awake()
     {
-
         rigi = GetComponent<Rigidbody2D>();
-
     }
 
     void Start () {
@@ -33,8 +35,9 @@ public class Player : MonoBehaviour {
         movex = Input.GetAxis("Horizontal");
         movey = Input.GetAxis("Vertical");
 
-        transform.Translate(Vector3.right * movex * speed * Time.deltaTime, Space.World);
+        //move player left and right
+        rigi.velocity = new Vector2(movex * speed, rigi.velocity.y);
 
-        transform.Rotate(Vector3.forward, movex * -1 * rotationSpeed);
+        transform.Rotate(Vector3.forward, movex * -rotationSpeed);
     }
 }
